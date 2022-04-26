@@ -1,4 +1,4 @@
-# DEVOPS-dora-metrics
+# DORA metrics
 
 ## How it works
 This controller watches deployments that present label `dora-controller/enabled: 'true'`.
@@ -54,56 +54,6 @@ With the exception of MTTR, the best source for these metrics is the CI pipeline
 For MTTR, the controller distinguishes broadly between "unavailable" and "available", where availability is defined as a deployment whose number of healthy pods matches the desired count.
 
 In addition to MTTR, there is an opportunity to measure the frequency of outages, but that falls outside the four metrics.
-
-## Adding deployment metrics to jobs using preconfigured deployment jobs
-If you are deploying workloads using central charts such as `java-common`, your pipeline is likely to feature a job like the following:
-```yaml
-      - lpg-common-k8s/java-common-deploy-prod-use2:
-          name: Deploy PROD US
-          context:
-            - Commerce-PROD
-            - PROD-USE2-Common
-            - artifactory-only
-            - Slack
-          service-name: << pipeline.parameters.service-name >>
-          requires: [Promote to PROD]
-```
-
-To instrument this service, you need to make one tiny change:
-
-```yaml
-      - lpg-common-k8s/java-common-deploy-prod-use2:
-          name: Deploy PROD US
-          context:
-            - Commerce-PROD
-            - PROD-USE2-Common
-            - artifactory-only
-            - Slack
-            - orb-publishing # add context "orb-publishing"
-          service-name: << pipeline.parameters.service-name >>
-          requires: [Promote to PROD]
-```
-
-## Adding deployment metrics to custom jobs
-To add support for these metrics, add the following step to your deployment job in CircleCI:
-
-```yaml
-  steps:
-      - ...
-      - lpg-common-k8s/lpg-deployment-metrics:
-          deployment: my-deployment-name
-          namespace: deployment-namespace
-```
-
-The only other requirement is that the `orb-publishing` context is defined for the job. For this add a context item as follows:
-
-```yaml
-  context:
-    - ...
-    - orb-publishing
-```
-
-This action will wait for your deployment to complete (successfully or otherwise) and then apply annotations and a label to your deployment:
 
 ```yaml
   labels:
