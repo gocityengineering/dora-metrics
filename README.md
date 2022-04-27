@@ -10,7 +10,7 @@ It collects four metrics:
 - cycle time
 - mean time to recovery
 
-These are the four metrics highlighted as worth measuring by the authors of [Accelerate](https://www.amazon.co.uk/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339); they are somewhat arbitrary but as good a starting point as any.
+These are the four metrics highlighted as worth measuring by the authors of [Accelerate](https://www.amazon.co.uk/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339).
 
 Different teams interpret the exact meaning of the four metrics in ways that make sense to them, which is exactly as it should be. This implementation applies the following:
 
